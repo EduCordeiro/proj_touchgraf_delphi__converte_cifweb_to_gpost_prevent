@@ -189,19 +189,32 @@ begin
       objParametrosDeEntrada.app_7z_64bits                              := objArquivoDeConfiguracao.getConfiguracao('app_7z_64bits');
       objParametrosDeEntrada.ARQUITETURA_WINDOWS                        := objArquivoDeConfiguracao.getConfiguracao('ARQUITETURA_WINDOWS');
 
+      objParametrosDeEntrada.TIPO_ARQUIVO_PADRAO                        := objArquivoDeConfiguracao.getConfiguracao('TIPO_ARQUIVO_PADRAO');
+
       objParametrosDeEntrada.LOGAR                                      := objArquivoDeConfiguracao.getConfiguracao('LOGAR');
 
       objParametrosDeEntrada.NUMERO_CONTRATO                            := objArquivoDeConfiguracao.getConfiguracao('NUMERO_CONTRATO');
       objParametrosDeEntrada.CODIGO_UNIDADE_POSTAGEM                    := objArquivoDeConfiguracao.getConfiguracao('CODIGO_UNIDADE_POSTAGEM');
       objParametrosDeEntrada.CEP_UNIDADE_POSTAGEM                       := objArquivoDeConfiguracao.getConfiguracao('CEP_UNIDADE_POSTAGEM');
-      objParametrosDeEntrada.CODIGO_AVALIACAO_TECNICA                   := objArquivoDeConfiguracao.getConfiguracao('CODIGO_AVALIACAO_TECNICA');
+
+      objParametrosDeEntrada.CODIGO_AVALIACAO_TECNICA_PREVENT           := objArquivoDeConfiguracao.getConfiguracao('CODIGO_AVALIACAO_TECNICA_PREVENT');
+      objParametrosDeEntrada.CODIGO_AVALIACAO_TECNICA_SAFRA             := objArquivoDeConfiguracao.getConfiguracao('CODIGO_AVALIACAO_TECNICA_SAFRA');
+
       objParametrosDeEntrada.DNE_ATUALIZADO                             := objArquivoDeConfiguracao.getConfiguracao('DNE_ATUALIZADO');
-      objParametrosDeEntrada.NUMERO_CARTAO                              := objArquivoDeConfiguracao.getConfiguracao('NUMERO_CARTAO');
-      objParametrosDeEntrada.CODIGO_MUTIPLO                             := objArquivoDeConfiguracao.getConfiguracao('CODIGO_MUTIPLO');
+
+      objParametrosDeEntrada.NUMERO_CARTAO_PREVENT                      := objArquivoDeConfiguracao.getConfiguracao('NUMERO_CARTAO_PREVENT');
+      objParametrosDeEntrada.NUMERO_CARTAO_SAFRA                        := objArquivoDeConfiguracao.getConfiguracao('NUMERO_CARTAO_SAFRA');
+
+      objParametrosDeEntrada.CODIGO_MULTIPLO_PREVENT                    := objArquivoDeConfiguracao.getConfiguracao('CODIGO_MULTIPLO_PREVENT');
+      objParametrosDeEntrada.CODIGO_MULTIPLO_SAFRA                      := objArquivoDeConfiguracao.getConfiguracao('CODIGO_MULTIPLO_SAFRA');
+
       objParametrosDeEntrada.CODIGO_CONTEUDO                            := objArquivoDeConfiguracao.getConfiguracao('CODIGO_CONTEUDO');
       objParametrosDeEntrada.CODIGO_SERVICO_ADICIONAL                   := objArquivoDeConfiguracao.getConfiguracao('CODIGO_SERVICO_ADICIONAL');
       objParametrosDeEntrada.VALOR_DECLARADO                            := objArquivoDeConfiguracao.getConfiguracao('VALOR_DECLARADO');
-      objParametrosDeEntrada.PESO                                       := objArquivoDeConfiguracao.getConfiguracao('PESO');
+
+      objParametrosDeEntrada.PESO_PREVENT                               := objArquivoDeConfiguracao.getConfiguracao('PESO_PREVENT');
+      objParametrosDeEntrada.PESO_SAFRA                                 := objArquivoDeConfiguracao.getConfiguracao('PESO_SAFRA');
+
       objParametrosDeEntrada.FAC_SIMPLES_LOCAL                          := objArquivoDeConfiguracao.getConfiguracao('FAC_SIMPLES_LOCAL');
       objParametrosDeEntrada.FAC_SIMPLES_ESTADUAL                       := objArquivoDeConfiguracao.getConfiguracao('FAC_SIMPLES_ESTADUAL');
       objParametrosDeEntrada.FAC_SIMPLES_NACIONAL                       := objArquivoDeConfiguracao.getConfiguracao('FAC_SIMPLES_NACIONAL');
@@ -1128,6 +1141,9 @@ var
   sCodigoServico                    : string;
 
   sNumeroCartao                     : string;
+  sCodigoDeMultiplo                 : string;
+  sPeso                             : string;
+  sLabelProduto                     : string;
 
   sCODIGO_AVALIACAO_TECNICA         : string;
 
@@ -1279,8 +1295,6 @@ begin
 
         sLinha01 := sLinha;
 
-        sCODIGO_AVALIACAO_TECNICA := objParametrosDeEntrada.CODIGO_AVALIACAO_TECNICA;
-
         sCEP                              := copy(sLinha, 327, 8);
         sCEP                              := StringReplace(sCEP, '-', '', [rfReplaceAll, rfIgnoreCase]);
         sCEP                              := StringReplace(sCEP, ' ', '', [rfReplaceAll, rfIgnoreCase]);
@@ -1307,9 +1321,31 @@ begin
       if sTipoRegistro = 'F' then
       begin
 
-        sFolhas                           := '1';
+        IF objParametrosDeEntrada.TIPO_ARQUIVO_PADRAO = '0' THEN
+        Begin
+          sCODIGO_AVALIACAO_TECNICA := objParametrosDeEntrada.CODIGO_AVALIACAO_TECNICA_PREVENT;
+          sNumeroCartao             := objParametrosDeEntrada.NUMERO_CARTAO_PREVENT;
+          sCodigoDeMultiplo         := objParametrosDeEntrada.CODIGO_MULTIPLO_PREVENT;
+          sPeso                     := objParametrosDeEntrada.PESO_PREVENT;
 
-        sCIF_WEB                          := copy(sLinha, 106, 34);
+          sCIF_WEB                  := copy(sLinha, 106, 34);
+
+          sLabelProduto             := 'PREVENT';
+        end;
+
+        IF objParametrosDeEntrada.TIPO_ARQUIVO_PADRAO = '1' THEN
+        begin
+          sCODIGO_AVALIACAO_TECNICA := objParametrosDeEntrada.CODIGO_AVALIACAO_TECNICA_SAFRA;
+          sNumeroCartao             := objParametrosDeEntrada.NUMERO_CARTAO_SAFRA;
+          sCodigoDeMultiplo         := objParametrosDeEntrada.CODIGO_MULTIPLO_SAFRA;
+          sPeso                     := objParametrosDeEntrada.PESO_SAFRA;
+
+          sCIF_WEB                  := copy(sLinha, 103, 34);
+
+          sLabelProduto             := 'SAFRA';
+        end;
+
+        sFolhas                           := '1';
 
         sDR_Postgem                       := copy(sCIF_WEB, 01, 02);
         sCodigoADM                        := copy(sCIF_WEB, 03, 08);
@@ -1325,11 +1361,11 @@ begin
         sMesPostagem                      := copy(sDataPostagem, 3, 2);
         sAnoPostagem                      := copy(sAno, 1, 2) + copy(sDataPostagem, 5, 2);
 
-        sCIF_GPOST                        := objParametrosDeEntrada.NUMERO_CARTAO
+        sCIF_GPOST                        := sNumeroCartao
                                            + sLoteFAC
                                            + sSequenciaOBJ
                                            + sCodigoDestino
-                                           + objParametrosDeEntrada.CODIGO_MUTIPLO
+                                           + sCodigoDeMultiplo
                                            + sDataPostagem;
 
         sLinha := StringReplace(sLinha, sCIF_WEB, sCIF_GPOST, [rfReplaceAll, rfIgnoreCase]);
@@ -1382,7 +1418,7 @@ begin
                   + ' VALUES ('
                   + '"'   + IntToStr(iContReg)
                   + '","' + objParametrosDeEntrada.NUMERO_CONTRATO
-                  + '","' + objParametrosDeEntrada.NUMERO_CARTAO
+                  + '","' + sNumeroCartao
                   + '","' + sLoteFAC
                   + '","' + objParametrosDeEntrada.CODIGO_UNIDADE_POSTAGEM
                   + '","' + objParametrosDeEntrada.CEP_UNIDADE_POSTAGEM
@@ -1391,9 +1427,9 @@ begin
                   + '","' + sAnoPostagem
                   + '","' + objParametrosDeEntrada.DNE_ATUALIZADO
                   + '","' + sSequenciaOBJ
-                  + '","' + objParametrosDeEntrada.PESO
+                  + '","' + sPeso
                   + '","' + sCodigoServico
-                  + '","' + objParametrosDeEntrada.CODIGO_MUTIPLO
+                  + '","' + sCodigoDeMultiplo
                   + '","' + objParametrosDeEntrada.CODIGO_CONTEUDO
                   + '","' + objParametrosDeEntrada.CODIGO_SERVICO_ADICIONAL
                   + '","' + objParametrosDeEntrada.VALOR_DECLARADO
@@ -1402,7 +1438,7 @@ begin
                   + '","' + sDataPostagem
                   + '","' + FormatDateTime('YYYYMMDD', objParametrosDeEntrada.MOVIMENTO)
                   + '","' + sArquivoEntrada
-                  + '","' + 'PREVENT'
+                  + '","' + sLabelProduto
                   + '"'
                   + ')';
         objConexao.Executar_SQL(__queryMySQL_processamento__, sComando, 1);
@@ -1453,7 +1489,7 @@ begin
                      + '","' + ''
                      + '","' + sCepStatus
                      + '","' + ''
-                     + '","' + 'PREVENT'
+                     + '","' + sLabelProduto
                      + '","' + sLinha01 + ' ' + sLinha
                      + '")'
                      ;

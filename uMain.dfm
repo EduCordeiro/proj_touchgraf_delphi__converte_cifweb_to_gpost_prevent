@@ -1,8 +1,8 @@
 object frmMain: TfrmMain
-  Left = 634
-  Top = 208
+  Left = 552
+  Top = 216
   Width = 803
-  Height = 631
+  Height = 628
   Caption = 'ESQUELO'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,6 +14,9 @@ object frmMain: TfrmMain
   Position = poDesktopCenter
   OnCreate = FormCreate
   OnShow = FormShow
+  DesignSize = (
+    795
+    601)
   PixelsPerInch = 96
   TextHeight = 13
   object lblIdProcessamento: TLabel
@@ -215,9 +218,10 @@ object frmMain: TfrmMain
   object pgcMain: TPageControl
     Left = 35
     Top = 26
-    Width = 726
+    Width = 727
     Height = 473
-    ActivePage = tbsReverter
+    ActivePage = tbsEntrada
+    Anchors = [akLeft, akTop, akRight]
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -540,6 +544,19 @@ object frmMain: TfrmMain
         ParentFont = False
         TabOrder = 3
         OnClick = chkDefinirDataPostagemClick
+      end
+      object radioGroupTipoArquivo: TRadioGroup
+        Left = 16
+        Top = 136
+        Width = 273
+        Height = 49
+        Caption = 'Tipo Arquivo'
+        Columns = 2
+        ItemIndex = 0
+        Items.Strings = (
+          'Prevent'
+          'Safra')
+        TabOrder = 4
       end
     end
     object tbsRelatorios: TTabSheet

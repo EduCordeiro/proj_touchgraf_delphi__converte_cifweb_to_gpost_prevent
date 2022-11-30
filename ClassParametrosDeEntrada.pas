@@ -96,6 +96,8 @@ interface
       app_7z_64bits                              : string;
       ARQUITETURA_WINDOWS                        : string;
 
+      TIPO_ARQUIVO_PADRAO                        : string;
+
       stlRelatorioQTDE                           : TStringList;
       PEDIDO_LOTE_TMP                            : string; // USADO PARA SALVAR RELATORIO
 
@@ -106,17 +108,25 @@ interface
       NUMERO_CONTRATO                            : STRING;
       CODIGO_UNIDADE_POSTAGEM                    : STRING;
       CEP_UNIDADE_POSTAGEM                       : STRING;
-      CODIGO_AVALIACAO_TECNICA                   : STRING;
+      
+      CODIGO_AVALIACAO_TECNICA_PREVENT           : STRING;
+      CODIGO_AVALIACAO_TECNICA_SAFRA             : STRING;
+
       DNE_ATUALIZADO                             : STRING;
 
 
-      NUMERO_CARTAO                              : STRING;
-      CODIGO_MUTIPLO                             : STRING;
+      NUMERO_CARTAO_PREVENT                      : STRING;
+      NUMERO_CARTAO_SAFRA                        : STRING;
+
+      CODIGO_MULTIPLO_PREVENT                    : STRING;
+      CODIGO_MULTIPLO_SAFRA                      : STRING;
+
       CODIGO_CONTEUDO                            : STRING;
       CODIGO_SERVICO_ADICIONAL                   : STRING;
       VALOR_DECLARADO                            : STRING;
 
-      PESO                                       : STRING;
+      PESO_PREVENT                               : STRING;
+      PESO_SAFRA                                 : STRING;
 
       FAC_SIMPLES_LOCAL                          : STRING;
       FAC_SIMPLES_ESTADUAL                       : STRING;

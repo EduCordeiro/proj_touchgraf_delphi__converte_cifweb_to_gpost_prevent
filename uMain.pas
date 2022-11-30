@@ -61,6 +61,7 @@ type
     dtpDataPostagem: TDateTimePicker;
     chkDefinirDataPostagem: TCheckBox;
     chkTemRetencao: TCheckBox;
+    radioGroupTipoArquivo: TRadioGroup;
     procedure btnSairClick(Sender: TObject);
     procedure btnSobreClick(Sender: TObject);
     procedure btnExecutarClick(Sender: TObject);
@@ -218,7 +219,9 @@ begin
 
       objCore.objParametrosDeEntrada.TESTE                                         := chkTeste.Checked;
 
-      objCore.objParametrosDeEntrada.TEM_ARQUIVO_RETENCAO                          := chkTemRetencao.Checked;      
+      objCore.objParametrosDeEntrada.TIPO_ARQUIVO_PADRAO                           := IntToStr(radioGroupTipoArquivo.ItemIndex);
+
+      objCore.objParametrosDeEntrada.TEM_ARQUIVO_RETENCAO                          := chkTemRetencao.Checked;
 
       objCore.objParametrosDeEntrada.INFORMACAO_DOS_ARQUIVOS_SELECIONADOS          := lblInfos.Caption;
 
@@ -440,6 +443,8 @@ begin
           dtpDataPostagem.Enabled := false;
 
           edtPathSaida.Enabled := False;
+
+          radioGroupTipoArquivo.ItemIndex := StrToInt(objCore.objParametrosDeEntrada.TIPO_ARQUIVO_PADRAO);
 
 
 
